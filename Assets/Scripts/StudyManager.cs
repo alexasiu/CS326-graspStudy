@@ -11,6 +11,7 @@ public class StudyManager : MonoBehaviour
 
     public GameObject peg;
     public GameObject hole;
+    public GameObject gaze;
     
     private enum StudyState {Start, Trial, Pause, End};
     private StudyState _currentState = StudyState.Start;
@@ -19,6 +20,7 @@ public class StudyManager : MonoBehaviour
 
     private int currTrialNum = 0;
     public int totalTrials = 5;
+    public int userNum = 0;
 
     private float trialStartTime;
     private float trialEndTime;
@@ -67,8 +69,8 @@ public class StudyManager : MonoBehaviour
 
                     // start recording file for this trial
                     trialStartTime = Time.time;
-                    dataLogger.NewPegfile(currTrialNum);
-                    dataLogger.NewHolefile(currTrialNum);
+                    dataLogger.NewDataFile(currTrialNum, userNum);
+                    dataLogger.NewStatsFile(userNum);
                 }
             break;
 
@@ -77,8 +79,7 @@ public class StudyManager : MonoBehaviour
                 if (LOG_DATA) { // Record data if it's time
                     _startRecTime -= Time.deltaTime;
                     if ( _startRecTime <= 0 ) {
-                        dataLogger.RecordPegPose(currTrialNum, Time.time, peg.transform);
-                        dataLogger.RecordHolePose(currTrialNum, Time.time, hole.transform);
+                        dataLogger.RecordData(currTrialNum, Time.time, peg.transform, hole.transform, gaze.transform.position);
                         _startRecTime = recRate;
                     }
                 }
@@ -125,8 +126,8 @@ public class StudyManager : MonoBehaviour
 
                     // start new file recordings and update start time
                     trialStartTime = Time.time;
-                    dataLogger.NewPegfile(currTrialNum);
-                    dataLogger.NewHolefile(currTrialNum);
+                    dataLogger.NewDataFile(currTrialNum, userNum);
+
                     // set screen to start
                     duringTrialText.enabled = true;
                     endTrialText.enabled = false;

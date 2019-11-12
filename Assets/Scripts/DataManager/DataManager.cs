@@ -29,6 +29,7 @@ public class DataManager : MonoBehaviour
     private FileLoggerThreadLoop _pegLoggerThread;
     private FileLoggerThreadLoop _holeLoggerThread;
     private FileLoggerThreadLoop _statsLoggerThread;
+    private FileLoggerThreadLoop _dataLoggerThread;
 
     #region Unity updates
     // Use this for initialization
@@ -36,19 +37,23 @@ public class DataManager : MonoBehaviour
     {
         // TODO use Path.Combine instead for cross platform compatibility
         filePath = Directory.GetCurrentDirectory() + "/Assets/Data";
-        string fileName = fileNameBase +  "_stats.csv";
 
-        _statsLoggerThread = new FileLoggerThreadLoop(
-            "statsLoggerThread", true, System.Threading.ThreadPriority.Lowest, 5, 4,
-            fileName, filePath, writeTimeout);
-
-        // Start the thread
-        _statsLoggerThread.Start();
     }
 
     public void RecordStats(int trialNum, float start, float end) {
         if (_statsLoggerThread == null) return;
         _statsLoggerThread.EnqueueStringToWrite(trialNum + "," + start + "," + end);
+    }
+
+    public void RecordData(int trialNum, float time, Transform peg, Transform hole, Vector3 gaze) {
+        if (_dataLoggerThread == null) return;
+        string data = trialNum + "," + time + "," + 
+                    peg.position.x + "," + peg.position.y + "," + peg.position.z + "," + 
+                    peg.rotation.x + "," + peg.rotation.y + "," + peg.rotation.z + "," +
+                    hole.position.x + "," + hole.position.y + "," + hole.position.z + "," + 
+                    hole.rotation.x + "," + hole.rotation.y + "," + hole.rotation.z + "," +
+                    gaze.x + "," + gaze.y + "," + gaze.z;
+        _dataLoggerThread.EnqueueStringToWrite(data);
     }
 
     public void RecordPegPose(int trialNum, float time, Transform trans) {
@@ -67,12 +72,36 @@ public class DataManager : MonoBehaviour
         _holeLoggerThread.EnqueueStringToWrite(data);
     }
 
+    public void NewStatsFile(int userNum) {
+        string fileName = fileNameBase + "-" + userNum + "_stats";
+
+        _statsLoggerThread = new FileLoggerThreadLoop(
+            "statsLoggerThread", true, System.Threading.ThreadPriority.Lowest, 5, 4,
+            fileName, filePath, writeTimeout);
+
+        // Start the thread
+        _statsLoggerThread.Start();
+    }
+
+    public void NewDataFile(int trialNum, int userNum) {
+        if (_dataLoggerThread != null)  {
+            _dataLoggerThread.CloseAtConvenience();
+        }
+
+        string fileName = fileNameBase + "-" + userNum + "_data" + "_trial-" + trialNum;
+        _dataLoggerThread = new FileLoggerThreadLoop(
+            "dataLoggerThread"+trialNum, true, System.Threading.ThreadPriority.Lowest, 5, 4,
+            fileName, filePath, writeTimeout);
+        // Start the thread
+        _dataLoggerThread.Start();
+    }
+
     public void NewPegfile(int trialNum) {
         if (_pegLoggerThread != null)  {
             _pegLoggerThread.CloseAtConvenience();
         }
 
-        string fileName = fileNameBase + "_" + trialNum + "_peg.csv";
+        string fileName = fileNameBase + "_" + trialNum + "_peg";
         _pegLoggerThread = new FileLoggerThreadLoop(
             "pegLoggerThread"+trialNum, true, System.Threading.ThreadPriority.Lowest, 5, 4,
             fileName, filePath, writeTimeout);
@@ -84,7 +113,7 @@ public class DataManager : MonoBehaviour
         if (_holeLoggerThread != null)  {
             _holeLoggerThread.CloseAtConvenience();
         }
-        string fileName = fileNameBase + "_" + trialNum + "_hole.csv";
+        string fileName = fileNameBase + "_" + trialNum + "_hole";
         _holeLoggerThread = new FileLoggerThreadLoop(
             "holeLoggerThread"+trialNum, true, System.Threading.ThreadPriority.Lowest, 5, 4,
             fileName, filePath, writeTimeout);
@@ -100,6 +129,7 @@ public class DataManager : MonoBehaviour
         if (_holeLoggerThread != null) _holeLoggerThread.CloseAtConvenience();
         if (_pegLoggerThread != null) _pegLoggerThread.CloseAtConvenience();
         if (_statsLoggerThread != null) _statsLoggerThread.CloseAtConvenience();
+        if (_dataLoggerThread != null) _dataLoggerThread.CloseAtConvenience();
 
         if (debug)
         {
@@ -117,6 +147,7 @@ public class DataManager : MonoBehaviour
         if (_holeLoggerThread != null) _holeLoggerThread.CloseAtConvenience();
         if (_pegLoggerThread != null) _pegLoggerThread.CloseAtConvenience();
         if (_statsLoggerThread != null) _statsLoggerThread.CloseAtConvenience();
+        if (_dataLoggerThread != null) _dataLoggerThread.CloseAtConvenience();
 
         if (debug)
         {

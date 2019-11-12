@@ -59,13 +59,13 @@ namespace thrThreadLoop
             // Use this concatenation method so it handles Windows/Unix path system
             string fullFilePath = Path.Combine(paths2Concat);
             int k = 0;  // copy number of file
-            string temp = fullFilePath + k;
+            string temp = fullFilePath;
             // Find a file name that works
-            while (File.Exists(temp)) {
-                k ++;
-                temp = fullFilePath + k;
+            while (File.Exists(temp + ".csv")) {
+                k++;
+                temp = fullFilePath + "_duplicate" + k;
             }
-            fullFilePath = temp;
+            fullFilePath = temp + ".csv";
             // Open file stream
             fs = File.Create(fullFilePath);
             _isFileStreamOpen = true;

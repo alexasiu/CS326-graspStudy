@@ -12,6 +12,9 @@ public class StudyManager : MonoBehaviour
     public GameObject peg;
     public GameObject hole;
     public GameObject gaze;
+
+    public GameObject pegStartPos;
+    public GameObject holeStartPos;
     
     private enum StudyState {Start, Trial, Pause, End};
     private StudyState _currentState = StudyState.Start;
@@ -50,6 +53,10 @@ public class StudyManager : MonoBehaviour
         duringTrialText.enabled = false;
         endTrialText.enabled = false;
         endStudyText.enabled = false;
+
+        pegStartPos.SetActive(true);
+        holeStartPos.SetActive(true);
+        
     }
 
     // Update is called once per frame
@@ -58,12 +65,16 @@ public class StudyManager : MonoBehaviour
         switch(_currentState) {
 
             case StudyState.Start:
-                if (Input.GetKeyDown(KeyCode.Space)) {
+
+                if (ReadyToStartTrial()) {
                     _nextState = StudyState.Trial;
 
                     if (DEBUG) Debug.Log("switch to trial");
 
                     currTrialNum++;
+
+                    pegStartPos.SetActive(false);
+                    holeStartPos.SetActive(false);
 
                     // set screen text
                     duringTrialText.enabled = true;
@@ -76,6 +87,7 @@ public class StudyManager : MonoBehaviour
                     dataLogger.NewDataFile(currTrialNum, userNum);
                     dataLogger.NewStatsFile(userNum);
                 }
+
             break;
 
             case StudyState.Trial:
@@ -103,6 +115,9 @@ public class StudyManager : MonoBehaviour
                         endTrialText.enabled = true;
                         endStudyText.enabled = false;
 
+                        pegStartPos.SetActive(true);
+                        holeStartPos.SetActive(true);
+
                         // Show screen that says press space to start next trial
                         if (DEBUG) Debug.Log("switch to pause");
 
@@ -114,6 +129,10 @@ public class StudyManager : MonoBehaviour
                         endTrialText.enabled = false;
                         endStudyText.enabled = true;
 
+
+                        pegStartPos.SetActive(false);
+                        holeStartPos.SetActive(false);
+
                         if (DEBUG) Debug.Log("switch to end");
                         
                         // Show screen that says end of study
@@ -124,9 +143,12 @@ public class StudyManager : MonoBehaviour
             break;
 
             case StudyState.Pause:
-                if (Input.GetKeyDown(KeyCode.Space)) { 
+                if (ReadyToStartTrial()) { 
 
                     if (DEBUG) Debug.Log("switch to trial");
+                    
+                    pegStartPos.SetActive(false);
+                    holeStartPos.SetActive(false);
 
                     // start new file recordings and update start time
                     trialStartTime = Time.time;
@@ -143,10 +165,26 @@ public class StudyManager : MonoBehaviour
             break;
 
             case StudyState.End:
+                
             break;
 
         }// end switch
 
         _currentState = _nextState;
     }// end update
+    
+    private bool ReadyToStartTrial() {
+        return CheckHoleInStart() && CheckPegInStart();
+    }
+
+    private bool CheckPegInStart() {
+        TriggerDetector pegTrig = peg.GetComponent<TriggerDetector>();
+            return (pegTrig.collided && pegTrig.objCollider.name == "VRStartPositionCollider");
+    }
+
+    private bool CheckHoleInStart() {
+        TriggerDetector holeTrig = hole.GetComponent<TriggerDetector>();
+            return (holeTrig.collided && holeTrig.objCollider.name == "ConStartPositionCollider");
+    }
+
 }

@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class TriggerDetector : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool collided = false;
+    public Collider objCollider;
 
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(this.name + " trigger: " + other.name);
+        collided = true;
+        objCollider = other;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        collided = false;
+        objCollider = other;
     }
 
 

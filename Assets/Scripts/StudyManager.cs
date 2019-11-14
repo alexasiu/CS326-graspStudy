@@ -57,12 +57,7 @@ public class StudyManager : MonoBehaviour
     {
         dataLogger = this.GetComponent<DataManager>();
 
-        duringTrialText.enabled = false;
-        endTrialText.enabled = false;
-        endStudyText.enabled = false;
-
-        SetPegHoleActive(true);
-        SetTargetActive(false);
+        SetForInitialState();
         
     }
 
@@ -80,17 +75,8 @@ public class StudyManager : MonoBehaviour
 
                     currTrialNum++;
 
-                    // set screen text
-                    duringTrialText.enabled = true;
-                    endTrialText.enabled = false;
-                    endStudyText.enabled = false;
-                    trialNumText.text = "Trial num: " + currTrialNum + "/" + totalTrials;
-
-                    // Remove start markers
-                    SetPegHoleActive(false);
-
-                    // Activate target
-                    SetTargetActive(true);
+                    // set screen text + markers ready for new trial
+                    SetForNewTrial();
 
                     // start recording file for this trial
                     trialStartTime = Time.time;
@@ -110,7 +96,7 @@ public class StudyManager : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.RightArrow)) { // replace with trial end condition
+                if (Input.GetKeyDown(KeyCode.RightArrow)) { // replace with trial end condition -- successful peg-hole
 
                     // save end time for this trial
                     trialEndTime = Time.time;
@@ -121,13 +107,7 @@ public class StudyManager : MonoBehaviour
                     currTrialNum++;
                     if (currTrialNum <= totalTrials) { // if we haven't reached max
 
-                        duringTrialText.enabled = false;
-                        endTrialText.enabled = true;
-                        endStudyText.enabled = false;
-
-                        // Set start positions and remove target
-                        SetPegHoleActive(true);
-                        SetTargetActive(false);
+                        SetForEndTrial();
 
                         // Show screen that says press space to start next trial
                         if (DEBUG) Debug.Log("switch to pause");
@@ -136,12 +116,7 @@ public class StudyManager : MonoBehaviour
                         
                     } else { // End of study
 
-                        duringTrialText.enabled = false;
-                        endTrialText.enabled = false;
-                        endStudyText.enabled = true;
-                        
-                        SetPegHoleActive(false);
-                        SetTargetActive(false);
+                        SetForEndStudy();
 
                         if (DEBUG) Debug.Log("switch to end");
                         
@@ -157,19 +132,12 @@ public class StudyManager : MonoBehaviour
 
                     if (DEBUG) Debug.Log("switch to trial");
                     
-                    SetPegHoleActive(false);
-                    SetTargetActive(true);
+                    SetForNewTrial();
 
                     // start new file recordings and update start time
                     trialStartTime = Time.time;
                     dataLogger.NewDataFile(currTrialNum, userNum);
-
-                    // set screen to start
-                    duringTrialText.enabled = true;
-                    endTrialText.enabled = false;
-                    endStudyText.enabled = false;
-                    trialNumText.text = "Trial num: " + currTrialNum + "/" + totalTrials;
-
+                    
                     _nextState = StudyState.Trial;
                 }
             break;
@@ -183,10 +151,65 @@ public class StudyManager : MonoBehaviour
         _currentState = _nextState;
     }// end update
 
+    
+
+    private void SetForInitialState() {
+        duringTrialText.enabled = false;
+        endTrialText.enabled = false;
+        endStudyText.enabled = false;
+        VRduringTrialText.enabled = false;
+        VRendTrialText.enabled = false;
+        VRendStudyText.enabled = false;
+        
+        SetPegHoleActive(true);
+        SetTargetActive(false);
+    }
+
+    private void SetForNewTrial() {
+        // set text
+       duringTrialText.enabled = true;
+       endTrialText.enabled = false;
+       endStudyText.enabled = false;
+       trialNumText.text = "Trial num: " + currTrialNum + "/" + totalTrials;
+       VRduringTrialText.enabled = true;
+       VRendTrialText.enabled = false;
+       VRendStudyText.enabled = false;
+       VRtrialNumText.text = "Trial num: " + currTrialNum + "/" + totalTrials;
+
+       // Remove start markers
+       SetPegHoleActive(false);
+       // Activate target
+       SetTargetActive(true);
+    }
+
+    private void SetForEndTrial() {
+       duringTrialText.enabled = false;
+       endTrialText.enabled = true;
+       endStudyText.enabled = false;
+       VRduringTrialText.enabled = false;
+       VRendTrialText.enabled = true;
+       VRendStudyText.enabled = false;
+
+        // Set start positions and remove target
+        SetPegHoleActive(true);
+        SetTargetActive(false);
+    }
+
+    private void SetForEndStudy() {
+        duringTrialText.enabled = false;
+        endTrialText.enabled = false;
+        endStudyText.enabled = true;
+        VRduringTrialText.enabled = false;
+        VRendTrialText.enabled = false;
+        VRendStudyText.enabled = true;
+
+        SetPegHoleActive(false);
+        SetTargetActive(false);
+    }
 
     private void SetPegHoleActive(bool active) {
-                    pegStartPos.SetActive(active);
-                    holeStartPos.SetActive(active);
+        pegStartPos.SetActive(active);
+        holeStartPos.SetActive(active);
     }
 
     private void SetTargetActive(bool active) {

@@ -13,8 +13,15 @@ public class StudyManager : MonoBehaviour
     public GameObject hole;
     public GameObject gaze;
 
+    public GameObject targetPos;
+    public GameObject targetVisible;
     public GameObject pegStartPos;
     public GameObject holeStartPos;
+
+    private float minTargetX = -0.741f;
+    private float maxTargetX = -0.435f;
+    private float minTargetY = 0.0645f;
+    private float maxTargetY = 0.341f;
     
     private enum StudyState {Start, Trial, Pause, End};
     private StudyState _currentState = StudyState.Start;
@@ -54,8 +61,8 @@ public class StudyManager : MonoBehaviour
         endTrialText.enabled = false;
         endStudyText.enabled = false;
 
-        pegStartPos.SetActive(true);
-        holeStartPos.SetActive(true);
+        SetPegHoleActive(true);
+        SetTargetActive(false);
         
     }
 
@@ -73,14 +80,17 @@ public class StudyManager : MonoBehaviour
 
                     currTrialNum++;
 
-                    pegStartPos.SetActive(false);
-                    holeStartPos.SetActive(false);
-
                     // set screen text
                     duringTrialText.enabled = true;
                     endTrialText.enabled = false;
                     endStudyText.enabled = false;
                     trialNumText.text = "Trial num: " + currTrialNum + "/" + totalTrials;
+
+                    // Remove start markers
+                    SetPegHoleActive(false);
+
+                    // Activate target
+                    SetTargetActive(true);
 
                     // start recording file for this trial
                     trialStartTime = Time.time;
@@ -115,8 +125,9 @@ public class StudyManager : MonoBehaviour
                         endTrialText.enabled = true;
                         endStudyText.enabled = false;
 
-                        pegStartPos.SetActive(true);
-                        holeStartPos.SetActive(true);
+                        // Set start positions and remove target
+                        SetPegHoleActive(true);
+                        SetTargetActive(false);
 
                         // Show screen that says press space to start next trial
                         if (DEBUG) Debug.Log("switch to pause");
@@ -128,10 +139,9 @@ public class StudyManager : MonoBehaviour
                         duringTrialText.enabled = false;
                         endTrialText.enabled = false;
                         endStudyText.enabled = true;
-
-
-                        pegStartPos.SetActive(false);
-                        holeStartPos.SetActive(false);
+                        
+                        SetPegHoleActive(false);
+                        SetTargetActive(false);
 
                         if (DEBUG) Debug.Log("switch to end");
                         
@@ -147,8 +157,8 @@ public class StudyManager : MonoBehaviour
 
                     if (DEBUG) Debug.Log("switch to trial");
                     
-                    pegStartPos.SetActive(false);
-                    holeStartPos.SetActive(false);
+                    SetPegHoleActive(false);
+                    SetTargetActive(true);
 
                     // start new file recordings and update start time
                     trialStartTime = Time.time;
@@ -172,6 +182,23 @@ public class StudyManager : MonoBehaviour
 
         _currentState = _nextState;
     }// end update
+
+
+    private void SetPegHoleActive(bool active) {
+                    pegStartPos.SetActive(active);
+                    holeStartPos.SetActive(active);
+    }
+
+    private void SetTargetActive(bool active) {
+        if (active) {
+            // Activate target
+            Vector2 newPos = GetRandomTargetPos();
+            targetPos.transform.position = new Vector3(newPos.x, targetPos.transform.position.y, newPos.y);
+            targetVisible.SetActive(true);
+        } else {
+            targetVisible.SetActive(false);
+        }
+    }
     
     private bool ReadyToStartTrial() {
         return CheckHoleInStart() && CheckPegInStart();
@@ -187,4 +214,9 @@ public class StudyManager : MonoBehaviour
             return (holeTrig.collided && holeTrig.objCollider.name == "ConStartPositionCollider");
     }
 
+    private Vector2 GetRandomTargetPos() {
+        return new Vector2( Random.Range(minTargetX, maxTargetX), 
+                            Random.Range(minTargetY, maxTargetY));
+    }
+    
 }

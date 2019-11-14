@@ -36,6 +36,10 @@ public class StudyManager : MonoBehaviour
     public Text endTrialText;
     public Text endStudyText; 
     public Text trialNumText; 
+    public Text VRduringTrialText;
+    public Text VRendTrialText;
+    public Text VRendStudyText; 
+    public Text VRtrialNumText; 
     #endregion
 
     // Start is called before the first frame update

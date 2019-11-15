@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8ae8d3a4961ee448341a6d5c1f92eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  HighlightColor: {r: 0.11875317, g: 0.6886792, b: 0, a: 1}
   AnimationTime: 0.02
 --- !u!1 &662758013
 GameObject:
@@ -2633,6 +2633,10 @@ PrefabInstance:
     - target: {fileID: 11474672, guid: 3dce9c79dbdbdfc419560a29a65e66be, type: 3}
       propertyPath: RigidBodyId
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 197132, guid: 3dce9c79dbdbdfc419560a29a65e66be, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2026416, guid: 3dce9c79dbdbdfc419560a29a65e66be, type: 3}
       propertyPath: m_TargetDisplay

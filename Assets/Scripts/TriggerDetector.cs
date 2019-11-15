@@ -9,7 +9,7 @@ public class TriggerDetector : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this.name + " trigger: " + other.name);
+        //Debug.Log(this.name + " trigger: " + other.name);
         collided = true;
         objCollider = other;
     }

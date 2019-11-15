@@ -38,7 +38,7 @@ public class StudyManager : MonoBehaviour
     #region DataRecording variables
     private float _startRecTime = 0.0f;
     private float _lastRecTime = 0.0f;  //[s]
-    public float recRate = 0.05f;  //[s]
+    public float recRate = 0.02f;  //[s]
     #endregion DataRecording variables
 
     #region canvas instructions
@@ -96,7 +96,7 @@ public class StudyManager : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.RightArrow)) { // replace with trial end condition -- successful peg-hole
+                if (CheckTrialComplete()) { // check successful peg-hole
 
                     // save end time for this trial
                     trialEndTime = Time.time;
@@ -143,7 +143,7 @@ public class StudyManager : MonoBehaviour
             break;
 
             case StudyState.End:
-                
+                // end of study
             break;
 
         }// end switch
@@ -240,6 +240,20 @@ public class StudyManager : MonoBehaviour
     private Vector2 GetRandomTargetPos() {
         return new Vector2( Random.Range(minTargetX, maxTargetX), 
                             Random.Range(minTargetY, maxTargetY));
+    }
+
+    private bool CheckPegInHole() {
+        return this.GetComponent<PegInHole>().CheckPegInHole();
+    }
+
+    private bool CheckHoleInTarget() {
+        if (DEBUG) Debug.Log("Hole in target");
+        TriggerDetector holeTrig = hole.GetComponent<TriggerDetector>();
+        return (holeTrig.collided && holeTrig.objCollider.name == "TargetCollider");
+    }
+
+    private bool CheckTrialComplete() {
+        return (CheckHoleInTarget() && CheckPegInHole());
     }
     
 }

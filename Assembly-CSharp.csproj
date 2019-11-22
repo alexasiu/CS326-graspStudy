@@ -65,7 +65,7 @@
      <Compile Include="Assets\Scripts\DataManager\DataManager.cs" />
      <Compile Include="Assets\Scripts\DataManager\FileLoggerThreadLoop.cs" />
      <Compile Include="Assets\Scripts\DataManager\StringDataStreamThreadLoop.cs" />
-     <Compile Include="Assets\Scripts\GazeTracker.cs" />
+     <Compile Include="Assets\Scripts\GazeManager.cs" />
      <Compile Include="Assets\Scripts\PegInHole.cs" />
      <Compile Include="Assets\Scripts\SerialComm\DataStreamThreadLoop.cs" />
      <Compile Include="Assets\Scripts\SerialComm\SerialThreadLoop.cs" />

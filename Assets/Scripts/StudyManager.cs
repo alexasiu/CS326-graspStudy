@@ -92,6 +92,9 @@ public class StudyManager : MonoBehaviour
                     _startRecTime -= Time.deltaTime;
                     if ( _startRecTime <= 0 ) {
                         dataLogger.RecordData(currTrialNum, Time.time, peg.transform, hole.transform, gaze.transform.position);
+
+                        // TODO Call Gaze Manager and record gaze position data + focused object
+
                         _startRecTime = recRate;
                     }
                 }

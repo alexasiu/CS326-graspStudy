@@ -45,6 +45,8 @@ public class DataManager : MonoBehaviour
         _statsLoggerThread.EnqueueStringToWrite(trialNum + "," + start + "," + end);
     }
 
+
+    // TODO Update this function to take in gaze data for recording
     public void RecordData(int trialNum, float time, Transform peg, Transform hole, Vector3 gaze) {
         if (_dataLoggerThread == null) return;
         string data = trialNum + "," + time + "," + 

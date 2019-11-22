@@ -8,12 +8,6 @@ public class PegInHole : MonoBehaviour
     public GameObject pegCheck_1;
     public GameObject pegCheck_2;
 
-    void Update() {
-        if (CheckPegInHole()) {
-            Debug.Log("peg in hole");
-        }
-    }
-
     public bool CheckPegInHole() {
         return (Check(pegCheck_1.GetComponent<TriggerDetector>()) && Check(pegCheck_2.GetComponent<TriggerDetector>()));
     }

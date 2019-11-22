@@ -17,7 +17,7 @@ public class DataManager : MonoBehaviour
 {
 
     // Set to false for minimal print statements
-    public bool debug = false;
+     public bool debug = false;
 
     #region file logging settings
     public string fileNameBase = "user";

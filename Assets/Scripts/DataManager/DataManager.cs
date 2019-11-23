@@ -40,21 +40,28 @@ public class DataManager : MonoBehaviour
 
     }
 
-    public void RecordStats(int trialNum, float start, float end) {
+    public void RecordStats(int trialNum, float start, float end, Transform pegStart, Transform holeStart) {
         if (_statsLoggerThread == null) return;
-        _statsLoggerThread.EnqueueStringToWrite(trialNum + "," + start + "," + end);
+        _statsLoggerThread.EnqueueStringToWrite(trialNum + "," + start + "," + end + "," + 
+                    pegStart.position.x + "," + pegStart.position.y + "," + pegStart.position.z + "," + 
+                    pegStart.rotation.x + "," + pegStart.rotation.y + "," + pegStart.rotation.z + "," +
+                    holeStart.position.x + "," + holeStart.position.y + "," + holeStart.position.z + "," + 
+                    holeStart.rotation.x + "," + holeStart.rotation.y + "," + holeStart.rotation.z);
     }
 
 
     // TODO Update this function to take in gaze data for recording
-    public void RecordData(int trialNum, float time, Transform peg, Transform hole, Vector3 gaze) {
+    public void RecordData(int trialNum, float time, Transform peg, Transform hole, Transform target, Vector3 gazePoint, string focusObject) {
         if (_dataLoggerThread == null) return;
         string data = trialNum + "," + time + "," + 
                     peg.position.x + "," + peg.position.y + "," + peg.position.z + "," + 
                     peg.rotation.x + "," + peg.rotation.y + "," + peg.rotation.z + "," +
                     hole.position.x + "," + hole.position.y + "," + hole.position.z + "," + 
                     hole.rotation.x + "," + hole.rotation.y + "," + hole.rotation.z + "," +
-                    gaze.x + "," + gaze.y + "," + gaze.z;
+                    target.position.x + "," + target.position.y + "," + target.position.z + "," + 
+                    target.rotation.x + "," + target.rotation.y + "," + target.rotation.z + "," +
+                    gazePoint.x + "," + gazePoint.y + "," + gazePoint.z + "," +
+                    focusObject;
         _dataLoggerThread.EnqueueStringToWrite(data);
     }
 

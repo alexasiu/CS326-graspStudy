@@ -19,24 +19,49 @@ public class GazeManager : MonoBehaviour
     // Update is called once per frame
     void Update() 
     {
-        this.transform.position = GetGazeOrigin();
-        Debug.Log(GetGazeOrigin());
-        Debug.Log(GetFocusedObject().name);
+
+        if (GetGaze3DPoint() == Vector3.zero) return;
+        this.transform.position = GetGaze3DPoint();
+        // Debug.Log(Get3DPoint());
+
     }
 
+    // Returns the gaze 3D point in World coordinates
+    public Vector3 GetGaze3DPoint() {
+        Vector3 trans = Vector3.zero;
 
-    private GameObject GetFocusedObject() {
+        Tobii.G2OM.FocusedCandidate focus = GetFocusedObject();
+        
+        if (!focus.IsRayValid) return trans;
+
+        RaycastHit hit;
+        Physics.Raycast(focus.Origin, focus.Direction, out hit, Mathf.Infinity);
+
+        return hit.point;
+    }
+
+    public GameObject GetGazeGameObject() {
+        return GetFocusedObject().GameObject;
+    }
+
+    // Get the gaze object of focus
+    public Tobii.G2OM.FocusedCandidate GetFocusedObject() {
+        
+        Tobii.G2OM.FocusedCandidate focus = 
+                        new Tobii.G2OM.FocusedCandidate {
+                            GameObject = null, 
+                            IsRayValid = false, 
+                            Origin = Vector3.zero,
+                            Direction = Vector3.zero
+                        };
+
         // Check whether Tobii XR has any focused objects.
         if (TobiiXR.FocusedObjects.Count > 0)
         {
             // The object being focused by the user, determined by G2OM.
-            var focusedObject = TobiiXR.FocusedObjects[0];
-            return focusedObject.GameObject; 
+            focus = TobiiXR.FocusedObjects[0];
         } 
-        return null;
-    }
-
-    private void GetGaze3DPosition() {
+        return focus;
     }
 
     private Vector3 GetGazeOrigin() {

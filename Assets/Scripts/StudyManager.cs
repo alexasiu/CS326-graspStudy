@@ -11,7 +11,7 @@ public class StudyManager : MonoBehaviour
 
     public GameObject peg;
     public GameObject hole;
-    public GameObject gaze;
+    public GazeManager gazeManager;
 
     public GameObject targetPos;
     public GameObject targetVisible;
@@ -57,6 +57,7 @@ public class StudyManager : MonoBehaviour
     {
         dataLogger = this.GetComponent<DataManager>();
 
+
         SetForInitialState();
         
     }
@@ -91,10 +92,17 @@ public class StudyManager : MonoBehaviour
                 if (LOG_DATA) { // Record data if it's time
                     _startRecTime -= Time.deltaTime;
                     if ( _startRecTime <= 0 ) {
-                        dataLogger.RecordData(currTrialNum, Time.time, peg.transform, hole.transform, gaze.transform.position);
+                        
+                        GameObject obj = gazeManager.GetGazeGameObject();
+                        string name = "";
+                        if (obj != null) name = obj.name;
 
                         // TODO Call Gaze Manager and record gaze position data + focused object
-
+                        // GetGaze Origin and GetGazeDirection
+                        dataLogger.RecordData(currTrialNum, Time.time, 
+                                                peg.transform, hole.transform, 
+                                                targetPos.transform,
+                                                gazeManager.GetGaze3DPoint(), name);
                         _startRecTime = recRate;
                     }
                 }
@@ -104,7 +112,7 @@ public class StudyManager : MonoBehaviour
                     // save end time for this trial
                     trialEndTime = Time.time;
                     // record the stats data
-                    dataLogger.RecordStats(currTrialNum, trialStartTime, trialEndTime);
+                    dataLogger.RecordStats(currTrialNum, trialStartTime, trialEndTime, pegStartPos.transform, holeStartPos.transform);
 
                     // advance trial number
                     currTrialNum++;
@@ -250,7 +258,7 @@ public class StudyManager : MonoBehaviour
     }
 
     private bool CheckHoleInTarget() {
-        if (DEBUG) Debug.Log("Hole in target");
+        // if (DEBUG) Debug.Log("Hole in target");
         TriggerDetector holeTrig = hole.GetComponent<TriggerDetector>();
         return (holeTrig.collided && holeTrig.objCollider.name == "TargetCollider");
     }

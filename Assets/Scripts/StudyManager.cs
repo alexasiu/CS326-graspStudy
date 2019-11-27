@@ -53,6 +53,8 @@ public class StudyManager : MonoBehaviour
     public Text VRtrialNumText; 
     #endregion
 
+    public bool holeInStart, pegInStart, holeInTarget, pegInHole;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +68,11 @@ public class StudyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        holeInStart = CheckHoleInStart();
+        pegInStart = CheckPegInStart();
+        holeInTarget = CheckHoleInTarget();
+        pegInHole = CheckPegInHole();
+
         switch(_currentState) {
 
             case StudyState.Start:
@@ -103,7 +110,7 @@ public class StudyManager : MonoBehaviour
                         dataLogger.RecordData(currTrialNum, Time.time, 
                                                 peg.transform, hole.transform, 
                                                 targetPos.transform,
-                                                gazeManager.GetGaze3DPoint(), name);
+                                                gazeManager.GetGaze3DPoint(), name, CheckHoleInStart(), CheckPegInStart(), CheckHoleInTarget(), CheckPegInHole());
                         _startRecTime = recRate;
                     }
                 }

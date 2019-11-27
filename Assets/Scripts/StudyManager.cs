@@ -23,10 +23,11 @@ public class StudyManager : MonoBehaviour
     private float minTargetY = 0.0645f;
     private float maxTargetY = 0.341f;
     
-    private enum StudyState {Start, Trial, Pause, End};
+    private enum StudyState {Start, Trial, Waiting2Return, Pause, End};
     private StudyState _currentState = StudyState.Start;
     private StudyState _nextState = StudyState.Start;
     private DataManager dataLogger;
+    private float enteredPauseTime = 0f;
 
     private int currTrialNum = 0;
     public int totalTrials = 5;
@@ -121,9 +122,9 @@ public class StudyManager : MonoBehaviour
                         SetForEndTrial();
 
                         // Show screen that says press space to start next trial
-                        if (DEBUG) Debug.Log("switch to pause");
+                        if (DEBUG) Debug.Log("switch to returning");
 
-                        _nextState = StudyState.Pause;
+                        _nextState = StudyState.Waiting2Return;
                         
                     } else { // End of study
 
@@ -138,8 +139,18 @@ public class StudyManager : MonoBehaviour
                 }
             break;
 
-            case StudyState.Pause:
+            case StudyState.Waiting2Return:
                 if (ReadyToStartTrial()) { 
+
+                    if (DEBUG) Debug.Log("switch to pause");
+                    enteredPauseTime = Time.time;
+                    
+                    _nextState = StudyState.Pause;
+                }
+            break;
+
+            case StudyState.Pause:
+                if (Time.time > enteredPauseTime + 1f) { 
 
                     if (DEBUG) Debug.Log("switch to trial");
                     

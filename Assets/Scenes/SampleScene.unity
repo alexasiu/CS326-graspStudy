@@ -3399,7 +3399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e73d5125df2043ffaa534c4e6b2046c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LOG_DATA: 1
+  LOG_DATA: 0
   DEBUG: 1
   peg: {fileID: 183276155}
   hole: {fileID: 1129152758}

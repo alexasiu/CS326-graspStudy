@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Tobii.XR;
+using ViveSR.anipal.Eye;
 
 
 /*
@@ -23,6 +24,11 @@ public class GazeManager : MonoBehaviour
         if (GetGaze3DPoint() == Vector3.zero) return;
         this.transform.position = GetGaze3DPoint();
         // Debug.Log(Get3DPoint());
+
+        // press c to initiate calibration
+        if (Input.GetKeyDown(KeyCode.C)) {
+            SRanipal_Eye.LaunchEyeCalibration();
+        }
 
     }
 

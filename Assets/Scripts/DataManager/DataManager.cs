@@ -51,7 +51,7 @@ public class DataManager : MonoBehaviour
 
 
     // TODO Update this function to take in gaze data for recording
-    public void RecordData(int trialNum, float time, Transform peg, Transform hole, Transform target, Vector3 gazePoint, string focusObject, bool HoleAtStart, bool PegAtStart, bool HoleAtTarget, bool PegInHole) {
+    public void RecordData(int trialNum, float time, Transform peg, Transform hole, Transform target, Vector3 gazePoint, string focusObject, bool HoleAtStart, bool PegAtStart, bool HoleAtTarget, bool PegInHole, bool PegTouchingHole) {
         if (_dataLoggerThread == null) return;
         string data = trialNum + "," + time + "," + 
                     peg.position.x + "," + peg.position.y + "," + peg.position.z + "," + 
@@ -62,7 +62,7 @@ public class DataManager : MonoBehaviour
                     target.rotation.x + "," + target.rotation.y + "," + target.rotation.z + "," +
                     gazePoint.x + "," + gazePoint.y + "," + gazePoint.z + "," +
                     focusObject + "," +
-                    System.Convert.ToInt32(HoleAtStart) + "," + System.Convert.ToInt32(PegAtStart) + "," + System.Convert.ToInt32(HoleAtTarget) + "," + System.Convert.ToInt32(PegInHole);
+                    System.Convert.ToInt32(HoleAtStart) + "," + System.Convert.ToInt32(PegAtStart) + "," + System.Convert.ToInt32(HoleAtTarget) + "," + System.Convert.ToInt32(PegInHole) + "," + System.Convert.ToInt32(PegTouchingHole);
         _dataLoggerThread.EnqueueStringToWrite(data);
     }
 

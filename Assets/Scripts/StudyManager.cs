@@ -18,10 +18,10 @@ public class StudyManager : MonoBehaviour
     public GameObject pegStartPos;
     public GameObject holeStartPos;
 
-    private float minTargetX = -0.741f;
-    private float maxTargetX = -0.435f;
-    private float minTargetY = 0.0645f;
-    private float maxTargetY = 0.341f;
+    private float minTargetX = -0.741f + 0.1f;
+    private float maxTargetX = -0.435f - 0.1f;
+    private float minTargetY = 0.0645f+0.1f;
+    private float maxTargetY = 0.341f-0.1f;
     
     private enum StudyState {Start, Trial, Waiting2Return, Pause, End};
     private StudyState _currentState = StudyState.Start;
@@ -53,7 +53,7 @@ public class StudyManager : MonoBehaviour
     public Text VRtrialNumText; 
     #endregion
 
-    public bool holeInStart, pegInStart, holeInTarget, pegInHole;
+    public bool holeInStart, pegInStart, holeInTarget, pegInHole, pegTouchingHole;
 
     // Start is called before the first frame update
     void Start()
@@ -68,10 +68,12 @@ public class StudyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // just for visualizing
         holeInStart = CheckHoleInStart();
         pegInStart = CheckPegInStart();
         holeInTarget = CheckHoleInTarget();
         pegInHole = CheckPegInHole();
+        pegTouchingHole = CheckPegTouchingHole();
 
         switch(_currentState) {
 
@@ -110,7 +112,7 @@ public class StudyManager : MonoBehaviour
                         dataLogger.RecordData(currTrialNum, Time.time, 
                                                 peg.transform, hole.transform, 
                                                 targetPos.transform,
-                                                gazeManager.GetGaze3DPoint(), name, CheckHoleInStart(), CheckPegInStart(), CheckHoleInTarget(), CheckPegInHole());
+                                                gazeManager.GetGaze3DPoint(), name, CheckHoleInStart(), CheckPegInStart(), CheckHoleInTarget(), CheckPegInHole(), CheckPegTouchingHole());
                         _startRecTime = recRate;
                     }
                 }
@@ -259,6 +261,11 @@ public class StudyManager : MonoBehaviour
     private bool CheckPegInStart() {
         TriggerDetector pegTrig = peg.GetComponent<TriggerDetector>();
             return (pegTrig.collided && pegTrig.objCollider.name == "VRStartPositionCollider");
+    }
+
+    private bool CheckPegTouchingHole() {
+        TriggerDetector pegTrig = peg.GetComponent<TriggerDetector>();
+            return (pegTrig.collided && pegTrig.objCollider.name == "HoleCollider");
     }
 
     private bool CheckHoleInStart() {

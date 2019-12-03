@@ -3610,7 +3610,7 @@ MonoBehaviour:
   pegStartPos: {fileID: 1592104285}
   holeStartPos: {fileID: 1018449659}
   totalTrials: 20
-  userNum: 1
+  userNum: 3
   recRate: 0.05
   duringTrialText: {fileID: 811198445}
   endTrialText: {fileID: 1737202080}

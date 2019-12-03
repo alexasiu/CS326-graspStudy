@@ -159,7 +159,7 @@ public class StudyManager : MonoBehaviour
             break;
 
             case StudyState.Pause:
-                if (Time.time > enteredPauseTime + 1f) { 
+                if (Time.time > enteredPauseTime + 2f) { 
 
                     if (DEBUG) Debug.Log("switch to trial");
                     

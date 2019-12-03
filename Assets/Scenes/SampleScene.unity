@@ -3585,7 +3585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  fileNameBase: K
+  fileNameBase: xx
   filePath: 
   writeTimeout: 1
 --- !u!114 &1910807923
@@ -3600,7 +3600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e73d5125df2043ffaa534c4e6b2046c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LOG_DATA: 1
+  LOG_DATA: 0
   DEBUG: 1
   peg: {fileID: 183276155}
   hole: {fileID: 1129152758}
@@ -3609,8 +3609,8 @@ MonoBehaviour:
   targetVisible: {fileID: 152126638}
   pegStartPos: {fileID: 1592104285}
   holeStartPos: {fileID: 1018449659}
-  totalTrials: 20
-  userNum: 4
+  totalTrials: 50
+  userNum: 5
   recRate: 0.05
   duringTrialText: {fileID: 811198445}
   endTrialText: {fileID: 1737202080}

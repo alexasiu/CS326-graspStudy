@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 152126639}
   - component: {fileID: 152126641}
   - component: {fileID: 152126640}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TargetColliderVisible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2540,7 +2540,7 @@ GameObject:
   - component: {fileID: 1451194055}
   - component: {fileID: 1451194057}
   - component: {fileID: 1451194056}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TargetText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3514,7 +3514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1898532314}
   - component: {fileID: 1898532313}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TargetPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3585,7 +3585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  fileNameBase: K
+  fileNameBase: U
   filePath: 
   writeTimeout: 1
 --- !u!114 &1910807923
@@ -3610,7 +3610,7 @@ MonoBehaviour:
   pegStartPos: {fileID: 1592104285}
   holeStartPos: {fileID: 1018449659}
   totalTrials: 50
-  userNum: 7
+  userNum: 8
   recRate: 0.05
   duringTrialText: {fileID: 811198445}
   endTrialText: {fileID: 1737202080}
@@ -3745,7 +3745,7 @@ GameObject:
   - component: {fileID: 2144467898}
   - component: {fileID: 2144467897}
   - component: {fileID: 2144467900}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TargetCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
